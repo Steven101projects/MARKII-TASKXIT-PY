@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 
 
 import LandingPage from "./pages/LandingPage"
+import WorkStationPage from './pages/WorkStationPage';
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
     <>
     <Routes>
       <Route path='/' element={<LandingPage />} />
+      <Route path='/ws' element={<WorkStationPage />} />
     </Routes>
     </>
   )

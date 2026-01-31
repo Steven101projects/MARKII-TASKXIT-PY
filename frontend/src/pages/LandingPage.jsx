@@ -3,10 +3,10 @@ import { useState } from "react"
 function SignInForm({ setFormMode }){
     
     return(
-      <div className="hover:scale-110 transition-transform flex justify-center items-center bg-gradient-to-br from-slate-300 to-slate-500 rounded-2xl w-80 lg:w-[30vw] h-64">
-       <div className="w-72 lg:w-[28vw] h-56 rounded-2xl bg-gradient-to-b from-slate-300 to-slate-100 p-4">
+      <div className="hover:scale-110 transition-transform flex justify-center items-center bg-gradient-to-br from-slate-300 to-slate-500 rounded-2xl w-80 lg:w-[30vw] h-72">
+       <div className="w-72 lg:w-[28vw] h-64 rounded-2xl bg-gradient-to-b from-slate-300 to-slate-100 p-4">
           <form className="flex flex-col gap-3">
-            <h2 className="text-gray-700 text-lg font-semibold text-center">Sign in here to start!</h2>
+            <h2 className="text-gray-700 text-xl font-semibold text-center">Sign in here to start!</h2>
 
             <input
               type="email"
@@ -22,9 +22,14 @@ function SignInForm({ setFormMode }){
               className="border rounded-md px-3 py-2"
             />
 
-            
+      <button
+        type="submit"
+        className="hover:text-blue-600 hover:bg-white hover:border-2 border-blue-600 mt-2 rounded-md bg-blue-600 px-3 py-2 text-white"
+      >
+        Sign In
+      </button>
           </form>
-          <p className="text-blue-900 italic mt-6 text-md font-semibold text-center">Someone New? <button
+          <p className="text-blue-900 italic mt-2 text-md font-semibold text-center">Someone New? <button
               type="button"
                onClick={() => setFormMode("register")}
               className="italic underline hover:font-bold hover:text-blue-400 text-blue-700">
@@ -199,7 +204,7 @@ export default function MainPage() {
       <img
         src="/taskxit_logo.svg"
         alt="Logo"
-        className="w-[72vw] md:w-[44vw] hover:scale-110 transition-transform"
+        className="w-[72vw] md:w-[44vw] hover:scale-110 transition-transform mt-10"
       />
 
       <p className="mb-8 text-xl italic">
