@@ -1,5 +1,9 @@
 import { useState } from "react"
 
+import usePageMeta from "../hooks/usePageMeta"
+
+
+
 function SignInForm({ setFormMode }){
     
     return(
@@ -196,8 +200,12 @@ function RegisterForm({setFormMode }) {
 
 
 export default function MainPage() {
+      usePageMeta("Taskxit | Welcome!",
+          "Sign In to start using Taskxit."
+    )
 
     const [formMode, setFormMode] = useState("signIn")
+
 
   return (
     <div className="h-[120vh] flex flex-col items-center">
