@@ -1,7 +1,7 @@
 import usePageMeta from "../hooks/usePageMeta"
 import MainHeader from "../components/MainHeader"
 import BlueBoard from "../components/workstation_page_components/BlueBoard"
-
+import BottomKeys from "../components/workstation_page_components/BottomKeys"
 
 
 export default function WorkStationPage(){
@@ -13,7 +13,7 @@ export default function WorkStationPage(){
         <div>
             <MainHeader />
             <BlueBoard />
-            <p>HERE IT IS</p>
+            <BottomKeys />
         </div>
     )
 };

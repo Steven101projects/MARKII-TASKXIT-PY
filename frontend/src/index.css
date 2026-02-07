@@ -10,15 +10,19 @@
 
   --color-primary: #6d84fe;
   --color-secondary: #fdf9b4;
+  --text-color-primary: #2d2727;
 }
 
 .bg-primary {
   background-color: var(--color-primary);
 }
 
-
 .bg-secondary {
   background-color: var(--color-secondary);
+}
+
+.text-primary {
+  color: var(--text-color-primary);
 }
 
 

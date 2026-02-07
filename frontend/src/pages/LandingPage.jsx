@@ -16,7 +16,7 @@ function SignInForm({ setFormMode }){
               type="email"
               placeholder="Email"
               required
-              className="border rounded-md px-3 py-2"
+              className="border rounded-md px-3 py-2 "
             />
 
             <input
@@ -195,9 +195,6 @@ function RegisterForm({setFormMode }) {
       </div>
     )
 }
-
-
-
 
 export default function MainPage() {
       usePageMeta("Taskxit | Welcome!",

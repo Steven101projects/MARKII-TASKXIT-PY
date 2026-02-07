@@ -13,12 +13,12 @@ export default function MainHeader(){
       <img
         src="/burger-menu.svg"
         alt="Logo"
-        className="w-16 hover:scale-110 transition-transform mr-3 ml-3"
+        className="w-20 hover:scale-110 transition-transform mr-3 ml-3 cursor-pointer"
       />  
          <img
         src="/user_logo.svg"
         alt="Logo"
-        className="w-14 hover:scale-110 transition-transform"
+        className="w-14 hover:scale-110 transition-transform cursor-pointer"
       />
     </div>
             <div className="font-bold text-5xl">Taskxit</div>
@@ -27,12 +27,12 @@ export default function MainHeader(){
    <img
         src="/pencil_logo.svg"
         alt="Logo"
-        className="w-14 hover:scale-110 transition-transform mr-3"
+        className="w-14 hover:scale-110 transition-transform mr-3 cursor-pointer"
       />
     <img
         src="/journal_logo.svg"
         alt="Logo"
-        className="w-16 hover:scale-110 transition-transform mr-5"
+        className="w-16 hover:scale-110 transition-transform mr-5 cursor-pointer"
       />
     </div>
 

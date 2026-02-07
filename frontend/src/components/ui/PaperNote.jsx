@@ -3,7 +3,7 @@
 
 
 
-export default function PaperNote({width, height, className}){
+export default function PaperNote({width, height, className, text}){
     
     return(
         <div
