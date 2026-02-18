@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-export default function usePageMeta(title, description) {
+export function usePageMeta(title, description) {
   useEffect(() => {
     if (title) {
       document.title = title

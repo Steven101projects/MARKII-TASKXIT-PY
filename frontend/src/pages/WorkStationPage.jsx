@@ -10,7 +10,7 @@ export default function WorkStationPage(){
     )
 
     return (
-        <div>
+        <div className="overflow-hidden h-screen">
             <MainHeader />
             <BlueBoard />
             <BottomKeys />

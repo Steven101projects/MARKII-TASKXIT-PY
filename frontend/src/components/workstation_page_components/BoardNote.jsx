@@ -2,13 +2,12 @@
 
 
 
-
 export default function BoardNote(){
 
     return (
         <div
         className="bg-secondary w-2/3 md:w-2/4 h-60
-        rounded-3xl mb-4 flex justify-center items-center
+        rounded-3xl mb-6 lg:mt-24 flex justify-center items-center
         border-2">
             <div
         className="bg-white w-full mx-2 h-56
