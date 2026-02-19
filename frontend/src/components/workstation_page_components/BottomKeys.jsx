@@ -8,7 +8,7 @@ import { useIsMobile } from "./BlueBoard"
 export default function BottomKeys(){
 
 const desktopView = (
-        <div className="flex w-full p-5 h-[35vh]">
+        <div className="flex w-screen px-5 h-[35vh] border-t-4 border-gray-300 border-dotted">
             <AddANote />
             <FolderShelf />
             <SideButtons />

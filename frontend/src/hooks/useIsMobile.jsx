@@ -2,7 +2,7 @@
 
 
 
-export function useIsMobile() {
+export default function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
