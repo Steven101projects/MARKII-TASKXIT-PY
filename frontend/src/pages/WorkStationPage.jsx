@@ -1,5 +1,5 @@
 import usePageMeta from "../hooks/usePageMeta"
-import MainHeader from "../components/MainHeader"
+import MainHeader from "../components/MainHeader" 
 import BlueBoard from "../components/workstation_page_components/BlueBoard"
 import BottomKeys from "../components/workstation_page_components/BottomKeys"
 

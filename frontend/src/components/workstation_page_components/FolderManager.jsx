@@ -15,7 +15,7 @@ function FolderCapsule(){
 export default function FolderShelf(){
 
     return (
-        <div className="px-5 w-3/6 max-w-5xl mt-3">
+        <div className="px-5 w-3/6 max-w-8xl mt-3">
             <p className="text-lg font-bold">Folders</p>
             <div id="folderGrid" className="mx-5 py-2 grid grid-cols-2 gap-4
              overflow-hidden overflow-y-auto px-6 custom-scroll

@@ -45,7 +45,7 @@ export default function MainHeader() {
       </div>
 
       {/* CENTER TITLE */}
-      <div className="font-bold text-5xl">Taskxit</div>
+      <div onClick={() => navigate("/ws")} className="font-bold text-5xl cursor-pointer">Taskxit</div>
 
       {/* RIGHT SIDE */}
       <div className="flex absolute right-0 items-center mr-5 gap-3">
