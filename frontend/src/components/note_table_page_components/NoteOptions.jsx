@@ -1,11 +1,7 @@
 
+export default function NoteOptions({mode, option, toggleLeft}){
 
-
-function ModesKeys(mode){
-
-}
-
-function FoldersKeys(mode){
+function FoldersKeys(){
 
     
 function FolderCapsule(){
@@ -74,7 +70,6 @@ function FolderCapsule(){
 }
 }
 
-export default function NoteOptions({mode, option, toggleLeft}){
 
 function TwoKeys(){
 
@@ -126,17 +121,104 @@ function TwoKeys(){
     )
 }
 }
+
+function ModesKeys(){
+
+    if(mode === "mobile"){
+    return (
+
+        <div className="">
+        <div className="flex justify-center gap-4 pt-8">
+        <div onClick={() => {toggleLeft("modes")}} className="flex justify-center p-2 items-center px-12
+        border-[2px] rounded-lg border-black text-lg bg-white
+        hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer
+        ">Modes
+        </div>
+
+        <div onClick={() => {toggleLeft("folders")}}  className="flex justify-center p-2 items-center px-12
+        border-[2px] rounded-lg border-black text-lg bg-white
+        hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer
+        ">Folders
+        </div>
+
+        </div>
+        </div>
+    )
+
+    } else {
+    return (
+        <div className="pt-8 w-[50%] h-screen">
+        <div className="flex justify-center p-2 items-center w-44
+        border-[2px] rounded-full px-3 text-lg bg-white border-[#ffbd59] 
+        ">Current Folder
+        </div>
+
+ <div className="flex flex-col items-center justify-center gap-2 h-[40%]">
+
+  <div id="otherPapers" className="flex gap-12 text-white font-bold m-4 mb-16">
+
+    <div className="text-center hover:scale-110 transition-transform cursor-pointer">
+      <img
+        src="/note-svgrepo-com.svg"
+        alt="Notes"
+        className="w-32 invert "
+      />
+      <p className="text-2xl mt-4">Notes</p>
+    </div>
+
+    <div className="text-center hover:scale-110 transition-transform cursor-pointer">
+      <img
+        src="/list-check-svgrepo-com.svg"
+        alt="Checklist"
+        className="w-32 invert "
+      />
+      <p className="text-2xl mt-4">Checklist</p>
+    </div>
+
+    <div className="text-center hover:scale-110 transition-transform cursor-pointer">
+      <img
+        src="/notes-note-svgrepo-com.svg"
+        alt="Numbered List"
+        className="w-32 invert"
+      />
+      <p className="text-xl mt-5">Numbered List</p>
+    </div>
+
+  </div>
+        <div onClick={() => {toggleLeft("modes")}}  className=
+        {`flex justify-center p-2 items-center
+        border-[2px] rounded-lg border-black text-lg bg-white w-[70%]
+        hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer
+        ` }>Modes
+        </div>
+        <div onClick={() => {toggleLeft("folders")}} className="flex justify-center p-2 items-center
+        border-[2px] rounded-lg border-black text-lg bg-white w-[70%]
+        hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer
+        ">Folders
+        </div>
+        </div>
+
+        </div>
+    )
+}
+}
+
  if(option === "folders"){
-    
     return (
         <>
-           <FoldersKeys mode={mode} />
+           <FoldersKeys/>
         </>
     )
- } else {
+}else if (option === "modes"){
+  return (
+    <>
+    <ModesKeys />
+    </>
+  )
+} else {
     return (
         <>
-           <TwoKeys mode={mode}/>
+           <TwoKeys/>
         </>
     )
  }
