@@ -1,36 +1,68 @@
+import { useState } from "react";
+
+function NoteCard() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  return (
+    <div
+      className="w-[50%] h-[110vh] m-8 border-[#ffbd59] border-2 rounded-2xl bg-white p-4
+      transform translate-y-0 hover:-translate-y-8 transition-transform duration-300"
+    >
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Title"
+        className="w-full font-bold text-3xl mb-2 outline-none placeholder:text-black"
+      />
+
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="Your note here..."
+        className="w-full h-[95%] text-2xl placeholder:text-gray-600 outline-none resize-none"
+      />
+    </div>
+  );
+}
+
+function MobileNoteCard() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  return (
+    <div
+      className="h-[70vh] m-4 mt-12 border-[#ffbd59] border-2 rounded-2xl bg-white
+      p-4 flex flex-col transform translate-y-0 hover:-translate-y-8 transition-transform duration-300"
+    >
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Title"
+        className="w-full font-bold text-3xl mb-2 bg-transparent outline-none placeholder:text-black"
+      />
+
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="Your note here..."
+        className="flex-1 w-full text-2xl placeholder:text-gray-600 bg-transparent outline-none resize-none "
+      />
+    </div>
+  );
+}
 
 function PaperSheet({modes}){
 
     if(modes === "mobile"){
 return (
-        <div
-        className="h-[70vh] m-4 mt-12 border-[#ffbd59] border-2 rounded-2xl bg-white
-         p-4 
-         transform translate-y-0 hover:-translate-y-8 transition-transform duration-300">
-         <div id="title" className=" font-bold text-3xl mb-2"><p>Title</p></div>
-         <div id="content" className="text-2xl"><p className="text-gray-600">Your note here...</p></div>
-        </div>
+    <MobileNoteCard />
     )
-    } else if
-    (modes === "desktop"){
+    } else {
  return (
-        <div
-        className="w-[50%] h-[110vh] m-8 border-[#ffbd59] border-2 rounded-2xl bg-white
-         p-4 
-         transform translate-y-0 hover:-translate-y-8 transition-transform duration-300">
-         <div id="title" className=" font-bold text-3xl mb-2"><p>Title</p></div>
-         <div id="content" className="text-2xl"><p className="text-gray-600">Your note here...</p></div>
-        </div>
-    )
-} else {
- return (
-        <div
-        className="w-[50%] h-[110vh] m-8 border-[#ffbd59] border-2 rounded-2xl bg-white
-         p-4 
-         transform translate-y-0 hover:-translate-y-8 transition-transform duration-300">
-         <div id="title" className=" font-bold text-3xl mb-2"><p>Title</p></div>
-         <div id="content" className="text-2xl"><p className="text-gray-600">Your note here...</p></div>
-        </div>
+<NoteCard />
     )      
     }
 }
@@ -107,7 +139,7 @@ return (
 }  
 }
 
-function OpenPaperModes({modes}){
+function OpenModes({modes}){
     
     if(modes === "mobile"){
 return (
@@ -145,18 +177,7 @@ return (
   </div>  
 </div>
     )
-    } else if
-    (modes === "desktop"){
- return (
-        <div
-        className="w-[50%] h-[110vh] m-8 border-[#ffbd59] border-2 rounded-2xl bg-white
-         p-4 
-         transform translate-y-0 hover:-translate-y-8 transition-transform duration-300">
-         <div id="title" className=" font-bold text-3xl mb-2"><p>Title</p></div>
-         <div id="content" className="text-2xl"><p className="text-gray-600">Your note here...</p></div>
-        </div>
-    )
-} else {
+    } else {
  return (
 <PaperSheet/>
     )      
@@ -171,6 +192,6 @@ export default function NotePaper({mode, toggleOptions}){
     } else if (toggleOptions === "folders"){
         return <OpenFolder modes={mode} />
     } else if (toggleOptions === "modes"){
-        return  <OpenPaperModes modes={mode}/>
+        return  <OpenModes modes={mode}/>
     }
 }

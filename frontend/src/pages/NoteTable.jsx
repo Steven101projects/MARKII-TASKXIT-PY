@@ -11,7 +11,7 @@ export default function NoteTable(){
 
         console.log(option)
 
- const isMobile = useIsMobile()
+ const isMobile = useIsMobile();
 
     return (
         <div className="overflow-hidden h-screen">
