@@ -1,2 +1,13 @@
+#this is the package.json of fastapi..
 fastapi
 uvicorn
+#this are the two main packages you need to have
+
+#for full-stack rendering(building)
+sqlalchemy
+pydantic
+# -- email_validator is needed if you want to use EmailStr in Pydantic. Pydantic documents that EmailStr requires the optional email validation package.
+email_validator
+python_jose[cryptography]
+pwdlib
+
