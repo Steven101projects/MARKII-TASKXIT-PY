@@ -1,16 +1,26 @@
+# - Auth Controller/Route Page: The Auth's controller and routes for api.
+
+# APIRouter: Creates a modular route group. Think Express Router.
 from fastapi import APIRouter, Depends, HTTPException, status
+
+# This is important. It automatically parses login form data with fields:
 from fastapi.security import OAuth2PasswordRequestForm
+
+#Imported to be used with database
 from sqlalchemy.orm import Session
 
+#imported from the files
 from app.core.database import get_db
 from app.core.security import hash_password, verify_password, create_access_token
 from app.models.user import User
 from app.schemas.user import UserCreate, UserResponse
 from app.schemas.auth import Token
 
+#Create a route for Auth
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+# [ POST Route: Register /api/auth/register ]
+@router.post("/register", response_model=UserResponse, stastus_code=status.HTTP_201_CREATED)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(
         (User.email == user.email) | (User.username == user.username)
@@ -34,6 +44,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
     return new_user
 
+# [ POST Route: Login /api/auth/login ]
 @router.post("/login", response_model=Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == form_data.username).first()

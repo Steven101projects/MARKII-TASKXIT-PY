@@ -1,6 +1,12 @@
+# - User Page: This is where the database structure of User is defined.
+
+#SQLALCHEMY is a model creator for sqlLite
 from sqlalchemy import Column, Integer, String
+
+#imported from database.py
 from app.core.database import Base
 
+#Schema of the User Database
 class User(Base):
     __tablename__ = "users"
 

@@ -1,3 +1,6 @@
+# - Security Options Page: Where all the security checks and auth checks are created. 
+
+# datetime, timedelta, timezone are used to create token expiration times.
 from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 from pwdlib import PasswordHash

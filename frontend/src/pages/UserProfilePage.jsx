@@ -35,15 +35,15 @@ function Profile(){
     </div>
 <div className="bg-gray-300 w-full h-[60%] mt-10 p-10">
     <div id="userStatus" className="flex w-full justify-evenly">
-        <div className="bg-white text-2xl text-center px-5 cursor-not-allowed border-blue-950 border-2">
+        <div className="bg-white text-4xl text-center px-10 py-5 cursor-not-allowed border-blue-950 border-2">
             <p><span>Save type: </span>Cloud</p>
         </div>
-                <div  className="bg-white text-2xl text-center w-64 cursor-pointer border-blue-950 border-2">
+                <div  className="bg-white text-4xl text-center px-10 py-5 cursor-pointer border-blue-950 border-2">
                     <button>Edit Profile Details</button>
         </div>
     </div>
-    <div>
-        <button className="">
+    <div className="w-full h-full flex justify-center items-end pb-20">
+        <button className="bg-black text-white px-7 py-6 text-4xl border-2 border-black hover:bg-white hover:text-red-500">
         Delete Account
         </button>
 
