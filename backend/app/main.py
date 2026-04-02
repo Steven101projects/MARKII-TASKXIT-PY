@@ -6,11 +6,13 @@ from fastapi import Depends, FastAPI
 
 # allows frontend to communicate with backend
 from fastapi.middleware.cors import CORSMiddleware
-
 from app.core.database import Base, engine
-from app.routes.auth import router as auth_router
+
 from app.deps import get_current_user
 from app.schemas.user import UserResponse
+
+from app.routes.auth import router as auth_router
+from app.routes.taskxitfolder import router as folder_router
 
 #Reads all your models (like User) Creates corresponding tables in the database
 Base.metadata.create_all(bind=engine)
@@ -27,6 +29,7 @@ app.add_middleware(
 
 #This plugs in your auth routes.
 app.include_router(auth_router)
+app.include_router(folder_router)
 
 @app.get("/api/health")
 def health():

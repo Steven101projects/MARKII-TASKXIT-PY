@@ -20,7 +20,9 @@ from app.schemas.auth import Token
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 # [ POST Route: Register /api/auth/register ]
-@router.post("/register", response_model=UserResponse, stastus_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+
+#Look for the forms, instead of json, and then search the data in Session.
 def register(user: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(
         (User.email == user.email) | (User.username == user.username)

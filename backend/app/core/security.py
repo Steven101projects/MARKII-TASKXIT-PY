@@ -6,6 +6,7 @@ from jose import jwt, JWTError
 from pwdlib import PasswordHash
 from app.core.config import settings
 
+
 SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
@@ -26,6 +27,7 @@ def create_access_token(data: dict):
 
 def decode_access_token(token: str):
     try:
-        payload = jwt.decode(token, SECRET_KET, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
     except JWTError:
         return None
