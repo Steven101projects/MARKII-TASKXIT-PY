@@ -8,7 +8,7 @@ class Folder(Base):
     __tablename__ = "folders"
 
     id = Column(Integer, primary_key=True, index=True)
-    foldername = Column(String(50), unique=True, index=True, nullable=False)
+    name = Column(String(50), unique=True, index=True, nullable=False)
     
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     
@@ -16,5 +16,8 @@ class Folder(Base):
 
     owner = relationship("User", back_populates="folders")
 
-
-    
+    notes = relationship(
+    "Note",
+    back_populates="folder",
+    cascade="all, delete-orphan"
+)

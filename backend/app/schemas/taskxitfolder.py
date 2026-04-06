@@ -8,7 +8,7 @@ class FolderCreate(BaseModel):
 class FolderResponse(BaseModel):
     id: int
     name: str
-    user_id: str
+    user_id: int
     created_at: datetime
 
     model_config = {

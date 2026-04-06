@@ -1,4 +1,4 @@
-# - Dependency Page: This file is the authentication dependency layer. Which will be used to check if the current user is the right user to be accessing the app.
+# - Dependency Page: This file is the dependency layer. Which will be used to check if input is the right access to be accessing the app.
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
