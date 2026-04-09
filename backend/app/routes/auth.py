@@ -30,7 +30,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
     if existing_user:
         raise HTTPException(
-            status_code=status.HTTP_4000_BAD_REQUEST,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username or email already exists"
         )
     
@@ -53,7 +53,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
-            status_code=status.HTTPS_401_UNAUTHORIZED,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password"
         )
     

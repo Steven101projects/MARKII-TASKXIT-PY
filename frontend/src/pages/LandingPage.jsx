@@ -1,9 +1,36 @@
 import { useState } from "react"
 import usePageMeta from "../hooks/usePageMeta"
-
+import { useNavigate } from "react-router-dom";
+import API from "../api";
 
 
 function SignInForm({ setFormMode }){
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const formData = new URLSearchParams();
+      formData.append("username", username);
+      formData.append("password", password);
+
+      const response = await API.post("/api/auth/login", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlcoded",
+        },
+      });
+
+      localStorage.setItem("token", response.data.access_token);
+      alert("Signed in successfully!");
+      navigate("/ws");
+      console.log("Login Success: ", response.data);
+    } catch(error) {
+      console.error("Login Failed: ", error.response?.data || error.message );
+      alert(error.response?.data?.detail || "Sign in Failed.");
+    }
+  };
     
     return(
       <div className="hover:scale-110 transition-transform flex justify-center items-center bg-gradient-to-br from-slate-300 to-slate-500 rounded-2xl w-80 lg:w-[30vw] h-72">
@@ -16,6 +43,8 @@ function SignInForm({ setFormMode }){
               placeholder="Email"
               required
               className="border rounded-md px-3 py-2 "
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
 
             <input
@@ -23,11 +52,14 @@ function SignInForm({ setFormMode }){
               placeholder="Password"
               required
               className="border rounded-md px-3 py-2"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
 
       <button
         type="submit"
         className="hover:text-blue-600 hover:bg-white hover:border-2 border-blue-600 mt-2 rounded-md bg-blue-600 px-3 py-2 text-white"
+        onClick={handleSignIn}
       >
         Sign In
       </button>
