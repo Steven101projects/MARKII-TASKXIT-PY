@@ -37,7 +37,8 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     new_user = User(
         username=user.username,
         email=user.email,
-        hashed_password=hash_password(user.password)
+        hashed_password=hash_password(user.password),
+        account_mode=user.account_mode
     )
 
     db.add(new_user)
@@ -48,19 +49,19 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
 # [ POST Route: Login /api/auth/login ]
 @router.post("/login", response_model=Token)
-def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username == form_data.username).first()
+def login(form_data: OAuth2PasswordRequestForm = Depends(), 
+          db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == form_data.username).first()
 
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid username or password"
+            detail="Invalid email or password"
         )
     
-    access_token = create_access_token(data={"sub" : user.username})
+    access_token = create_access_token(data={"sub" : user.email})
 
     return {
         "access_token": access_token,
-        "token_type" : "bearer"
+        "token_type": "bearer"
     }
-

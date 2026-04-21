@@ -1,20 +1,69 @@
+import { useNavigate } from "react-router-dom";
 
 
+export default function HeaderMenu() {
+  
+const navigate = useNavigate();
 
+const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+};
 
-
-export default function HeaderMenu(){
-    return (
-        <div className="absolute top-24 left-0 z-50 w-60 rounded-e-xl h-[50vh] bg-white
-        flex flex-col items-center text-black">
-            <div> How to use it?</div>
-            <div> Settings </div>
-            <div> Log Out Button</div>
-            <hr></hr>
-            <div>Creator</div>
-            <div>Support us!</div>
-            <div>Version 1.1</div>
-
+  return (
+    <aside
+      className="
+        absolute top-20 left-0 z-50
+        w-64 h-[70vh]
+        rounded-r-3xl
+        border-r-2 border-t-2 border-b-2 border-orange-300
+        bg-white/95 shadow-xl
+        px-5 py-6
+        flex flex-col justify-between
+      "
+    >
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-xl font-bold text-slate-800">Menu</h2>
+          <p className="text-sm text-slate-500">Taskxit Version 1.1</p>
         </div>
-    )
+
+        <nav className="flex flex-col gap-2">
+          <button className="w-full rounded-xl px-4 py-3 text-left text-slate-700 font-medium hover:bg-slate-100 transition">
+            How to use it?
+          </button>
+
+          <button className="w-full rounded-xl px-4 py-3 text-left text-slate-700 font-medium hover:bg-slate-100 transition">
+            Settings
+          </button>
+
+          <button className="w-full rounded-xl px-4 py-3 text-left text-red-600 font-semibold hover:bg-red-50 transition"
+            onClick={handleLogout}>
+            Log Out
+          </button>
+        </nav>
+
+        <div className="border-t border-slate-200 pt-4">
+          <p className="px-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+            About
+          </p>
+
+          <div className="mt-3 flex flex-col gap-2">
+            <button className="w-full rounded-xl px-4 py-3 text-left text-slate-700 font-medium hover:bg-slate-100 transition">
+              Creator
+            </button>
+
+            <button className="w-full rounded-xl px-4 py-3 text-left text-slate-700 font-medium hover:bg-slate-100 transition">
+              Support us
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-slate-200 pt-4">
+<p className="text-xs text-slate-400 text-center">
+  © 2026 Taskxit. All rights reserved.
+</p>     </div>
+    </aside>
+  );
 }

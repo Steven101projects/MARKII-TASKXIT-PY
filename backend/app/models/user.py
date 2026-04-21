@@ -17,5 +17,6 @@ class User(Base):
     username = Column(String(50), unique=True, index=True, nullable=False)
     email = Column(String(255), unique=True, index=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
+    account_mode = Column(String, nullable=False, default="local")
 
     folders = relationship("Folder", back_populates="owner")
