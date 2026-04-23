@@ -29,6 +29,11 @@ const handleLogout = () => {
         </div>
 
         <nav className="flex flex-col gap-2">
+          <button className="w-full rounded-xl px-4 py-3 text-left text-slate-700 font-medium hover:bg-slate-100 transition"
+          onClick={() => navigate("/ws")}>
+            Workstation (Home)
+          </button>
+
           <button className="w-full rounded-xl px-4 py-3 text-left text-slate-700 font-medium hover:bg-slate-100 transition">
             How to use it?
           </button>

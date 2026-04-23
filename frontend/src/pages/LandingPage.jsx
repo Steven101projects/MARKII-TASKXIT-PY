@@ -8,7 +8,8 @@ function SignInForm({ setFormMode }){
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
 
   
   const navigate = useNavigate();
@@ -33,13 +34,16 @@ function SignInForm({ setFormMode }){
       console.log("Login Success: ", response.data);
     } catch(error) {
       console.error("Login Failed: ", error.response?.data || error.message );
-      alert(error.response?.data?.detail || "Sign in Failed.");
+      // alert(error.response?.data?.detail || "Sign in Failed.");
+
+
+              setErrorMsg("- " + `${error.response?.data?.detail || "Sign in Failed."}` + " -");
     }
   };
     
     return(
-      <div className="hover:scale-110 transition-transform flex justify-center items-center bg-gradient-to-br from-slate-300 to-slate-500 rounded-2xl w-80 lg:w-[30vw] h-72">
-       <div className="w-72 lg:w-[28vw] h-64 rounded-2xl bg-gradient-to-b from-slate-300 to-slate-100 p-4">
+      <div className="hover:scale-110 transition-transform flex justify-center items-center bg-gradient-to-br from-slate-300 to-slate-500 rounded-2xl w-80 lg:w-[30vw] h-80">
+       <div className="w-72 lg:w-[28vw] h-72 rounded-2xl bg-gradient-to-b from-slate-300 to-slate-100 p-4">
           <form className="flex flex-col gap-3" onSubmit={handleSignIn}>
             <h2 className="text-gray-700 text-xl font-semibold text-center">Sign in here to start!</h2>
 
@@ -51,16 +55,32 @@ function SignInForm({ setFormMode }){
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
+       
+<div className="relative">
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder="Password"
+    required
+    className="border rounded-md px-3 py-2 w-full pr-10"
+    value={password}
+    onChange={(e) => {
+  setPassword(e.target.value);
+  setErrorMsg("");
+}}
+  />
 
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              className="border rounded-md px-3 py-2"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
+  <span
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+  >
+    {showPassword ? "👁-👁" : "( ᴗ͈ˬᴗ͈)"}
+  </span>
+</div>
+<div>
+    <p className="text-red-500 font-bold italic text-md w-full text-center">
+  {errorMsg}
+</p>
+</div>
       <button
         type="submit"
         className="hover:text-blue-600 hover:bg-white hover:border-2 border-blue-600 mt-2 rounded-md bg-blue-600 px-3 py-2 text-white"
@@ -119,9 +139,9 @@ function RegisterForm({setFormMode }) {
       } catch (error) {
 
         console.error("Register failed:", error.response?.data || error.message);
-        alert(error.response?.data?.detail || "Registration failed. ");
+        // alert(error.response?.data?.detail || "Registration failed. ");
 
-        setErrorMsg(error.message);
+              setErrorMsg("- " + `${error.response?.data?.detail || "Registration failed. "}` + " -");
       }
       };
 
@@ -193,6 +213,7 @@ function RegisterForm({setFormMode }) {
     placeholder="Password"
     required
     className="border rounded-md px-3 py-2 w-full pr-10"
+        value={password}
   />
 
   <span

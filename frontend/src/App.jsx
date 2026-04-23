@@ -1,7 +1,7 @@
 import './App.css'
 
 import { Routes, Route } from "react-router-dom";
-
+import ProtectedRoute from './components/ProtectedRoutes';
 
 import LandingPage from "./pages/LandingPage"
 import WorkStationPage from './pages/WorkStationPage';
@@ -15,10 +15,14 @@ function App() {
     <>
     <Routes>
       <Route path='/' element={<LandingPage />} />
+
+
+      <Route element={<ProtectedRoute />}>
       <Route path='/ws' element={<WorkStationPage />} />
       <Route path='/user' element={<UserProfilePage /> } />
       <Route path='/journal' element={<JournalPage /> } />
       <Route path='/addnote' element={<NoteTable />} />
+      </Route>
     </Routes>
     </>
   )

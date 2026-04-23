@@ -41,7 +41,7 @@ app.include_router(notes_router)
 def health():
     return {"status": "OK"}
 
-#Checks the Current User Logged In to the program.
+#Checks the Current User Logged In to the program before any tasks with privacy needed is executed.
 @app.get("/api/me", response_model=UserResponse)
 def get_me(current_user = Depends(get_current_user)):
     return current_user
