@@ -41,32 +41,6 @@ export default function FolderShelf() {
     fetchFolders();
   }, []);
 
-  async function handleCreateFolder() {
-    const folderName = prompt("Enter folder name:");
-
-    if (!folderName || !folderName.trim()) return;
-
-    try {
-      setCreating(true);
-
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/folders/",
-        { name: folderName.trim() },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setFolders((prevFolders) => [response.data, ...prevFolders]);
-    } catch (error) {
-      console.error("Failed to create folder:", error);
-    } finally {
-      setCreating(false);
-    }
-  }
-
   function handleFolderClick(folder) {
     console.log("Selected folder:", folder);
   }
@@ -80,15 +54,6 @@ export default function FolderShelf() {
         className="mx-5 py-2 grid grid-cols-2 gap-4
         overflow-hidden overflow-y-auto px-6 custom-scroll h-2/3"
       >
-        <button
-          onClick={handleCreateFolder}
-          disabled={creating}
-          className="flex justify-center p-2 border-[2px] rounded-full border-black text-xl font-bold
-          hover:scale-105 transition-transform bg-[#eeeced] cursor-pointer items-center h-16
-          hover:border-gray-300 disabled:opacity-50"
-        >
-          {creating ? "..." : "+"}
-        </button>
 
         {loading ? (
           <p>Loading folders...</p>

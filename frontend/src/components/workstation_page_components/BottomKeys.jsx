@@ -1,32 +1,31 @@
+import AddANote from "./AddANote";
+import FolderShelf from "./FolderManager";
+import SideButtons from "./SideButtons";
 
-import AddANote from "./AddANote"
-import FolderShelf from "./FolderManager"
-import SideButtons from "./SideButtons"
+import { useIsMobile } from "./BlueBoard";
+import { useState, useEffect } from "react";
 
-import { useIsMobile } from "./BlueBoard"
+export default function BottomKeys() {
 
-export default function BottomKeys(){
-
-const desktopView = (
+    const desktopView = (
         <div className="flex w-screen px-5 h-[35vh] border-t-4 border-gray-300 border-dotted">
-            <AddANote />
+            <AddANote/>
             <FolderShelf />
             <SideButtons />
         </div>
-)
+    );
 
-const mobileView = (
-        <div className="flex flex-col items-center
-        w-full pt-5 h-[50vh] relative bottom-16">
-            <AddANote />
+    const mobileView = (
+        <div className="flex flex-col items-center w-full pt-5 h-[50vh] relative bottom-16">
+            <AddANote/>
         </div>
-)
+    );
 
-    const isMobile = useIsMobile()
+    const isMobile = useIsMobile();
 
     return (
-        <div className="">
-        {isMobile ? mobileView : desktopView}
+        <div>
+            {isMobile ? mobileView : desktopView}
         </div>
-    )
+    );
 }
