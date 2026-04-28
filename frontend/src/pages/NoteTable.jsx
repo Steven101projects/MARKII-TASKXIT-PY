@@ -10,15 +10,60 @@ export default function NoteTable() {
     const [option, setOption] = useState("");
     const [showFolderModal, setShowFolderModal] = useState(true);
     const [selectedFolderId, setSelectedFolderId] = useState(null);
+    const [currentNote, setCurrentNote] = useState(null);
+    const [folders, setFolders] = useState([]);
 
     const isMobile = useIsMobile();
+    const navigate = useNavigate();
 
-    function handleFolderReady(folderId) {
+async function handleFolderReady(folderId) {
+    try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            localStorage.removeItem("token");
+            navigate("/login");
+            return;
+        }
+
         setSelectedFolderId(folderId);
         setShowFolderModal(false);
+        setOption("");
 
-        console.log("Folder selected for note:", folderId);
+        const createResponse = await fetch(
+            `http://127.0.0.1:8000/api/folders/${folderId}/notes`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    title: "Untitled Note",
+                    content: "",
+                }),
+            }
+        );
+
+        if (createResponse.status === 401) {
+            localStorage.removeItem("token");
+            navigate("/login");
+            return;
+        }
+
+        if (!createResponse.ok) {
+            throw new Error("Failed to create new note.");
+        }
+
+        const createdNote = await createResponse.json();
+
+        setCurrentNote(createdNote);
+
+        console.log("New note created for folder:", folderId);
+    } catch (err) {
+        console.error(err);
     }
+}
 
     return (
         <div className="overflow-hidden h-screen">
@@ -30,6 +75,8 @@ export default function NoteTable() {
                 showModal={showFolderModal}
                 setShowModal={setShowFolderModal}
                 onFolderReady={handleFolderReady}
+                folders={folders}
+                setFolders={setFolders}
             />
 
             <div className={isMobile ? "" : "flex"}>
@@ -37,6 +84,8 @@ export default function NoteTable() {
                     mode={isMobile ? "mobile" : "desktop"}
                     toggleOptions={option}
                     folderId={selectedFolderId}
+                    currentNote={currentNote}
+                    setCurrentNote={setCurrentNote}
                 />
 
                 <NoteOptions
@@ -44,25 +93,25 @@ export default function NoteTable() {
                     toggleLeft={setOption}
                     option={option}
                     folderId={selectedFolderId}
+                    setFolderId={setSelectedFolderId}
+                    folders={folders}
                 />
             </div>
         </div>
     );
 }
 
-function NewNote({ showModal, setShowModal, onFolderReady }) {
-
+function NewNote({
+    showModal,
+    setShowModal,
+    onFolderReady,
+    folders,
+    setFolders,
+}) {
     const navigate = useNavigate();
 
-    //stores the current folders available
-    const [folders, setFolders] = useState([]);
-
-    //Stores the chosen folder
     const [selectedFolder, setSelectedFolder] = useState("");
-
-    //input for new folder
     const [newFolderName, setNewFolderName] = useState("");
-    //Either Select Folder or Create Folder
     const [folderOption, setFolderOption] = useState("selectFolder");
     const [error, setError] = useState("");
 
@@ -80,11 +129,25 @@ function NewNote({ showModal, setShowModal, onFolderReady }) {
         try {
             const token = localStorage.getItem("token");
 
+            if (!token) {
+                setError("Session expired. Please log in again.");
+                localStorage.removeItem("token");
+                navigate("/");
+                return;
+            }
+
             const response = await fetch("http://127.0.0.1:8000/api/folders/", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
+
+            if (response.status === 401) {
+                setError("Session expired. Please log in again.");
+                localStorage.removeItem("token");
+                navigate("/");
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error("Failed to load folders");
@@ -93,6 +156,7 @@ function NewNote({ showModal, setShowModal, onFolderReady }) {
             const data = await response.json();
             setFolders(data);
         } catch (err) {
+            console.error(err);
             setError("Could not load folders.");
         }
     }
@@ -108,6 +172,13 @@ function NewNote({ showModal, setShowModal, onFolderReady }) {
 
             const token = localStorage.getItem("token");
 
+            if (!token) {
+                setError("Session expired. Please log in again.");
+                localStorage.removeItem("token");
+                navigate("/");
+                return;
+            }
+
             const response = await fetch("http://127.0.0.1:8000/api/folders/", {
                 method: "POST",
                 headers: {
@@ -119,14 +190,23 @@ function NewNote({ showModal, setShowModal, onFolderReady }) {
                 }),
             });
 
+            if (response.status === 401) {
+                setError("Session expired. Please log in again.");
+                localStorage.removeItem("token");
+                navigate("/");
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error("Failed to create folder");
             }
 
             const createdFolder = await response.json();
 
+            setFolders((prevFolders) => [...prevFolders, createdFolder]);
             onFolderReady(createdFolder.id);
         } catch (err) {
+            console.error(err);
             setError("Could not create folder.");
         }
     }
@@ -145,9 +225,7 @@ function NewNote({ showModal, setShowModal, onFolderReady }) {
     if (!showModal) return null;
 
     return (
-        <div
-            className="fixed inset-0 backdrop-blur-md bg-black/10 z-50 flex items-center justify-center px-4"
-        >
+        <div className="fixed inset-0 backdrop-blur-md bg-black/10 z-50 flex items-center justify-center px-4">
             <div
                 className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl p-6"
                 onClick={(e) => e.stopPropagation()}

@@ -43,7 +43,7 @@ def create_note(
 
     return new_note
 
-@router.get("folders/{folder_id}/notes", response_model=list[NoteResponse])
+@router.get("/folders/{folder_id}/notes", response_model=list[NoteResponse])
 def get_notes_by_folder(
     folder_id: int,
     db: Session = Depends(get_db),
