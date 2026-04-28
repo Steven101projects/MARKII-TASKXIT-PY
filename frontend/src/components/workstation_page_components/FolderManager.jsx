@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function FolderCapsule({ folder, onClick }) {
   return (
     <button
+      type="button"
       onClick={() => onClick(folder)}
       className="flex justify-center p-2 items-center
       border-[2px] rounded-full border-black text-lg h-16
@@ -17,8 +19,8 @@ function FolderCapsule({ folder, onClick }) {
 export default function FolderShelf() {
   const [folders, setFolders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [creating, setCreating] = useState(false);
 
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   async function fetchFolders() {
@@ -42,7 +44,7 @@ export default function FolderShelf() {
   }, []);
 
   function handleFolderClick(folder) {
-    console.log("Selected folder:", folder);
+    navigate(`/editnote/${folder.id}`);
   }
 
   return (
@@ -54,7 +56,6 @@ export default function FolderShelf() {
         className="mx-5 py-2 grid grid-cols-2 gap-4
         overflow-hidden overflow-y-auto px-6 custom-scroll h-2/3"
       >
-
         {loading ? (
           <p>Loading folders...</p>
         ) : folders.length === 0 ? (

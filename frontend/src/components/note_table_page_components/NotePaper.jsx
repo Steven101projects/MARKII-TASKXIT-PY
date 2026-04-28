@@ -365,10 +365,10 @@ function OpenModes({ modes, folderId, currentNote, setCurrentNote, onNoteSaved }
     />
   );
 }
-
 export default function NotePaper({
   mode,
   toggleOptions,
+  setToggleOptions,
   folderId,
   currentNote,
   setCurrentNote,
@@ -457,6 +457,8 @@ const sortedNotes = [...data].sort(
 
   function handleSelectNote(note) {
     setCurrentNote(note);
+    setToggleOptions("");
+
   }
 
   if (toggleOptions === "") {

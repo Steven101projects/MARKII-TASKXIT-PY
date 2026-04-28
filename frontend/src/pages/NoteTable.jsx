@@ -80,22 +80,24 @@ async function handleFolderReady(folderId) {
             />
 
             <div className={isMobile ? "" : "flex"}>
-                <NotePaper
-                    mode={isMobile ? "mobile" : "desktop"}
-                    toggleOptions={option}
-                    folderId={selectedFolderId}
-                    currentNote={currentNote}
-                    setCurrentNote={setCurrentNote}
-                />
+<NotePaper
+  mode={isMobile ? "mobile" : "desktop"}
+  toggleOptions={option}
+  setToggleOptions={setOption}
+  folderId={selectedFolderId}
+  currentNote={currentNote}
+  setCurrentNote={setCurrentNote}
+/>
 
-                <NoteOptions
-                    mode={isMobile ? "mobile" : "desktop"}
-                    toggleLeft={setOption}
-                    option={option}
-                    folderId={selectedFolderId}
-                    setFolderId={setSelectedFolderId}
-                    folders={folders}
-                />
+<NoteOptions
+    mode={isMobile ? "mobile" : "desktop"}
+    toggleLeft={setOption}
+    option={option}
+    folderId={selectedFolderId}
+    setFolderId={setSelectedFolderId}
+    folders={folders}
+    setFolders={setFolders}
+/>
             </div>
         </div>
     );

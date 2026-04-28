@@ -8,6 +8,7 @@ import WorkStationPage from './pages/WorkStationPage';
 import JournalPage from './pages/JournalPage';
 import UserProfilePage from './pages/UserProfilePage';
 import NoteTable from './pages/NoteTable';
+import EditNoteTable from './pages/EditNotes';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
       <Route path='/user' element={<UserProfilePage /> } />
       <Route path='/journal' element={<JournalPage /> } />
       <Route path='/addnote' element={<NoteTable />} />
+      <Route path='/editnote/:folderId' element={<EditNoteTable />} />
       </Route>
     </Routes>
     </>
