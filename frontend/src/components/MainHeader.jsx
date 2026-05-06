@@ -2,7 +2,7 @@ import { useState } from "react";
 import HeaderMenu from "./main_header_components/HeaderMenu";
 import { useNavigate } from "react-router-dom";
 
-export default function MainHeader() {
+export default function MainHeader({ isBoardEditing, setIsBoardEditing }) {
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -53,6 +53,7 @@ export default function MainHeader() {
           src="/pencil_logo.svg"
           alt="Pencil"
           className="w-14 hover:scale-110 transition-transform cursor-pointer"
+          onClick={() => setIsBoardEditing((prev) => !prev)}
         />
         <img
           src="/journal_logo.svg"

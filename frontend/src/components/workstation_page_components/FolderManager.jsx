@@ -7,11 +7,29 @@ function FolderCapsule({ folder, onClick }) {
     <button
       type="button"
       onClick={() => onClick(folder)}
-      className="flex justify-center p-2 items-center
-      border-[2px] rounded-full border-black text-lg h-16
-      hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer"
+      title={folder.name}
+      className="
+        group relative
+        flex items-center
+        w-full
+        py-4 px-6
+        border-[2px] rounded-full border-black text-lg
+        hover:scale-105 hover:border-gray-300
+        transition-transform cursor-pointer
+        overflow-hidden
+        whitespace-nowrap
+      "
     >
-      {folder.name}
+      <span
+        className="
+          folder-slide-text
+          block
+          w-max
+          whitespace-nowrap
+        "
+      >
+        {folder.name}
+      </span>
     </button>
   );
 }
@@ -53,8 +71,12 @@ export default function FolderShelf() {
 
       <div
         id="folderGrid"
-        className="mx-5 py-2 grid grid-cols-2 gap-4
-        overflow-hidden overflow-y-auto px-6 custom-scroll h-2/3"
+        className="
+          mx-5 py-2 px-6 pb-16
+          grid grid-cols-2 gap-4
+          overflow-y-auto overflow-x-hidden
+          custom-scroll max-h-[30vh]
+        "
       >
         {loading ? (
           <p>Loading folders...</p>

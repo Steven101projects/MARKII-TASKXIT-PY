@@ -273,7 +273,7 @@ function NewNote({
                         <button
                             type="button"
                             onClick={() => setFolderOption("newFolder")}
-                            className="px-5 py-2 rounded-xl border border-blue-700 text-black hover:bg-gray-100"
+                            className="px-5 py-2 rounded-xl border border-black text-black hover:border-blue-500 hover:text-blue-600"
                         >
                             Create a new folder
                         </button>
@@ -297,7 +297,7 @@ function NewNote({
                         <button
                             type="button"
                             onClick={() => setFolderOption("selectFolder")}
-                            className="px-7 py-2 rounded-xl border border-gray-700 text-black hover:bg-gray-100"
+                            className="px-7 py-2 rounded-xl border border-gray-700 text-black hover:border-red-500 hover:text-red-600"
                         >
                             Go back
                         </button>

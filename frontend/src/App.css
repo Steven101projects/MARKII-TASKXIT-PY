@@ -1,0 +1,22 @@
+
+@keyframes slideText {
+  0% {
+    transform: translateX(0);
+  }
+
+  45% {
+    transform: translateX(-35%);
+  }
+
+  55% {
+    transform: translateX(-35%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-slideText {
+  animation: slideText 4s ease-in-out infinite;
+}

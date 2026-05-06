@@ -16,6 +16,7 @@ function NoteCard({ folderId, currentNote, setCurrentNote, onNoteSaved }) {
       setContent(currentNote.content || "");
       setError("");
       setSaveStatus("");
+
       setTimeout(() => {
         isLoadingNote.current = false;
       }, 0);
@@ -131,6 +132,7 @@ function MobileNoteCard({ folderId, currentNote, setCurrentNote, onNoteSaved }) 
       setContent(currentNote.content || "");
       setError("");
       setSaveStatus("");
+
       setTimeout(() => {
         isLoadingNote.current = false;
       }, 0);
@@ -261,16 +263,34 @@ function OpenFolder({ modes, notes, currentNote, onCreateNew, onSelectNote }) {
         onClick={() => onSelectNote(note)}
         className={`${
           modes === "mobile" ? "h-[30vh] mx-8 my-2" : "h-[40vh] mx-8 my-4"
-        } border-2 rounded-2xl bg-white p-4 cursor-pointer
+        } border-2 rounded-2xl bg-white p-4 cursor-pointer overflow-hidden
         transform translate-y-0 hover:-translate-y-8 transition-transform duration-300
         ${isSelected ? "border-[#ffbd59]" : "border-gray-300"}`}
       >
-        <div className={modes === "mobile" ? "font-bold text-xl mb-2" : "font-bold text-2xl mb-2"}>
-          <p>{note.title}</p>
+        <div
+          className={
+            modes === "mobile"
+              ? "font-bold text-xl mb-2 min-w-0"
+              : "font-bold text-2xl mb-2 min-w-0"
+          }
+        >
+          <p className="truncate" title={note.title}>
+            {note.title}
+          </p>
         </div>
 
         <div className={modes === "mobile" ? "text-lg" : "text-xl"}>
-          <p className="text-gray-600">
+          <p
+            className="
+              text-gray-600
+              overflow-hidden
+              break-words
+              [display:-webkit-box]
+              [-webkit-box-orient:vertical]
+              [-webkit-line-clamp:5]
+            "
+            title={note.content || "Empty note"}
+          >
             {note.content ? note.content : "Empty note"}
           </p>
         </div>
@@ -288,8 +308,8 @@ function OpenFolder({ modes, notes, currentNote, onCreateNew, onSelectNote }) {
         <div
           onClick={onCreateNew}
           className="mx-8 my-4 border-gray-500 border-2 rounded-2xl bg-[#e3e3e3] text-gray-500
-         p-4 flex justify-center items-center cursor-pointer
-         transform translate-y-0 hover:-translate-y-8 transition-transform duration-300"
+          p-4 flex justify-center items-center cursor-pointer
+          transform translate-y-0 hover:-translate-y-8 transition-transform duration-300"
         >
           <div className="font-bold text-8xl mb-2">
             <p>+</p>
@@ -308,8 +328,8 @@ function OpenFolder({ modes, notes, currentNote, onCreateNew, onSelectNote }) {
       <div
         onClick={onCreateNew}
         className="h-[40vh] mx-8 my-4 border-gray-500 border-2 rounded-2xl bg-[#e3e3e3] text-gray-500
-         p-4 flex justify-center items-center cursor-pointer
-         transform translate-y-0 hover:-translate-y-8 transition-transform duration-300"
+        p-4 flex justify-center items-center cursor-pointer
+        transform translate-y-0 hover:-translate-y-8 transition-transform duration-300"
       >
         <div className="font-bold text-8xl mb-2">
           <p>+</p>
@@ -365,6 +385,7 @@ function OpenModes({ modes, folderId, currentNote, setCurrentNote, onNoteSaved }
     />
   );
 }
+
 export default function NotePaper({
   mode,
   toggleOptions,
@@ -401,9 +422,10 @@ export default function NotePaper({
       }
 
       const data = await response.json();
-const sortedNotes = [...data].sort(
-  (a, b) => new Date(a.created_at) - new Date(b.created_at)
-);
+
+      const sortedNotes = [...data].sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      );
 
       setNotes(sortedNotes);
     } catch (err) {
@@ -458,7 +480,6 @@ const sortedNotes = [...data].sort(
   function handleSelectNote(note) {
     setCurrentNote(note);
     setToggleOptions("");
-
   }
 
   if (toggleOptions === "") {

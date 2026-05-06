@@ -2,9 +2,9 @@ import { useState } from "react"
 import usePageMeta from "../hooks/usePageMeta"
 import { useNavigate } from "react-router-dom";
 import API from "../api";
+import ToastBox from "../components/ToastBox";
 
-
-function SignInForm({ setFormMode }){
+function SignInForm({ setFormMode, setToast  }){
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,15 +29,24 @@ function SignInForm({ setFormMode }){
       });
 
       localStorage.setItem("token", response.data.access_token);
-      alert("Signed in successfully!");
-      navigate("/ws");
+      //alert("Signed in successfully!");
+      // ^ this is for the pop up message
+setToast({
+  message: "Signed in successfully!",
+  type: "success",
+});
+
+setTimeout(() => {
+  navigate("/ws");
+}, 700);
+
       console.log("Login Success: ", response.data);
     } catch(error) {
       console.error("Login Failed: ", error.response?.data || error.message );
       // alert(error.response?.data?.detail || "Sign in Failed.");
-
-
               setErrorMsg("- " + `${error.response?.data?.detail || "Sign in Failed."}` + " -");
+
+      
     }
   };
     
@@ -102,7 +111,7 @@ function SignInForm({ setFormMode }){
 }
 
 
-function RegisterForm({setFormMode }) {
+function RegisterForm({setFormMode,  setToast  }) {
 
     const [accMode, setAccMode] = useState("");
     const [optionChoosen, setOption] = useState(false);
@@ -134,6 +143,10 @@ function RegisterForm({setFormMode }) {
         setEmail("");
         setPassword("");
 
+        setToast({
+  message: "Account created successfully!",
+  type: "success",
+});
         setFormMode("signIn");
 
       } catch (error) {
@@ -338,17 +351,27 @@ onChange={(e) => {
       </div>
     )
 }
-
 export default function MainPage() {
-      usePageMeta("Taskxit | Welcome!",
-          "Sign In to start using Taskxit."
-    )
+  usePageMeta(
+    "Taskxit | Welcome!",
+    "Sign In to start using Taskxit."
+  );
 
-    const [formMode, setFormMode] = useState("signIn")
+  const [formMode, setFormMode] = useState("signIn");
 
+  const [toast, setToast] = useState({
+    message: "",
+    type: "success",
+  });
 
   return (
     <div className="h-[120vh] flex flex-col items-center">
+      <ToastBox
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast({ message: "", type: "success" })}
+      />
+
       <img
         src="/taskxit_logo.svg"
         alt="Logo"
@@ -359,8 +382,11 @@ export default function MainPage() {
         The quickest exit from your daily tasks.
       </p>
 
-
-        {formMode === "signIn" ? <SignInForm setFormMode={setFormMode}/> : <RegisterForm setFormMode={setFormMode}/>}
+      {formMode === "signIn" ? (
+        <SignInForm setFormMode={setFormMode} setToast={setToast} />
+      ) : (
+        <RegisterForm setFormMode={setFormMode} setToast={setToast} />
+      )}
     </div>
-  )
+  );
 }
