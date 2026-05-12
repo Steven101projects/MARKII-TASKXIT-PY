@@ -16,6 +16,7 @@ from app.schemas.user import UserResponse
 from app.routes.auth import router as auth_router
 from app.routes.taskxitfolder import router as folder_router
 from app.routes.note import router as notes_router
+from app.routes import boardnote
 
 #Reads all your models (like User) Creates corresponding tables in the database
 Base.metadata.create_all(bind=engine)
@@ -36,6 +37,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(folder_router)
 app.include_router(notes_router)
+app.include_router(boardnote.router)
 
 @app.get("/api/health")
 def health():

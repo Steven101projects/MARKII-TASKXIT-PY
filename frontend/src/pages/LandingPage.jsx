@@ -379,7 +379,7 @@ export default function MainPage() {
       />
 
       <p className="mb-8 text-xl italic">
-        The quickest exit from your daily tasks.
+        The quickest exit from your daily tasks. (Beta v.1.1)
       </p>
 
       {formMode === "signIn" ? (

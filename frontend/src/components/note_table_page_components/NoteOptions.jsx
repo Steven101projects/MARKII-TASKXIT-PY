@@ -115,7 +115,7 @@ export default function NoteOptions({
 
   function FolderButtons() {
     return (
-      <div className="flex justify-center gap-4 pt-8">
+      <div className="flex justify-center gap-4 ">
         <div
           onClick={() => toggleLeft("modes")}
           className="flex justify-center p-2 items-center px-12
