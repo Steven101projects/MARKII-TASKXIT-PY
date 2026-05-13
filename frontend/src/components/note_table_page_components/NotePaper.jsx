@@ -253,71 +253,216 @@ function PaperSheet({ modes, folderId, currentNote, setCurrentNote, onNoteSaved 
     />
   );
 }
+function OpenFolder({
+  modes,
+  notes,
+  currentNote,
+  onCreateNew,
+  onSelectNote,
+  fetchNotes,
+  setCurrentNote
+}) {
+ function SmallPapers({ note }) {
+  const [menuOpen, setMenuOpen] = useState(false);
 
-function OpenFolder({ modes, notes, currentNote, onCreateNew, onSelectNote }) {
-  function SmallPapers({ note }) {
-    const isSelected = currentNote && currentNote.id === note.id;
+  const isSelected =
+    currentNote &&
+    currentNote.id === note.id;
 
-    return (
+  async function handleDeleteNote(event) {
+    event.stopPropagation();
+
+    const confirmed = window.confirm(
+      `Delete "${note.title}"?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await fetch(
+        `http://127.0.0.1:8000/api/notes/${note.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+if (
+  currentNote &&
+  currentNote.id === note.id
+) {
+  setCurrentNote(null);
+}
+
+await fetchNotes();
+    } catch (error) {
+      console.error(
+        "Failed to delete note:",
+        error
+      );
+    }
+  }
+
+  return (
+    <div
+      onClick={() => onSelectNote(note)}
+      className={`
+        relative
+        group
+        z-0
+        hover:z-50
+        ${
+          modes === "mobile"
+            ? "h-[30vh] mx-8 my-2"
+            : "h-[40vh] mx-8 my-4"
+        }
+        border-2
+        rounded-2xl
+        bg-white
+        p-4
+        cursor-pointer
+        overflow-visible
+        transform
+        translate-y-0
+        hover:-translate-y-8
+        transition-transform
+        duration-300
+        ${
+          isSelected
+            ? "border-[#ffbd59]"
+            : "border-gray-300"
+        }
+      `}
+    >
+      {/* 3 Dots */}
       <div
-        onClick={() => onSelectNote(note)}
-        className={`${
-          modes === "mobile" ? "h-[30vh] mx-8 my-2" : "h-[40vh] mx-8 my-4"
-        } border-2 rounded-2xl bg-white p-4 cursor-pointer overflow-hidden
-        transform translate-y-0 hover:-translate-y-8 transition-transform duration-300
-        ${isSelected ? "border-[#ffbd59]" : "border-gray-300"}`}
+        className="
+          absolute
+          top-3
+          right-3
+          opacity-0
+          group-hover:opacity-100
+          transition-opacity
+        "
       >
-        <div
-          className={
-            modes === "mobile"
-              ? "font-bold text-xl mb-2 min-w-0"
-              : "font-bold text-2xl mb-2 min-w-0"
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            setMenuOpen(!menuOpen);
+          }}
+          className="
+            w-8
+            h-8
+            rounded-full
+            hover:bg-gray-200
+            flex
+            items-center
+            justify-center
+            text-xl
+          "
+        >
+          ⋯
+        </button>
+
+        {/* Dropdown */}
+        {menuOpen && (
+          <div
+            className="
+              absolute
+              top-10
+              right-0
+              w-40
+              bg-white
+              border
+              border-gray-300
+              rounded-2xl
+              shadow-2xl
+              overflow-hidden
+              z-[999]
+            "
+          >
+            <div
+              onClick={(event) => {
+                event.stopPropagation();
+                alert(
+                  "Move feature next"
+                );
+              }}
+              className="
+                px-4
+                py-3
+                hover:bg-gray-100
+              "
+            >
+              Move Note
+            </div>
+
+            <div
+              onClick={handleDeleteNote}
+              className="
+                px-4
+                py-3
+                text-red-500
+                hover:bg-red-50
+              "
+            >
+              Delete Note
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Title */}
+      <div
+        className={
+          modes === "mobile"
+            ? "font-bold text-xl mb-2 min-w-0"
+            : "font-bold text-2xl mb-2 min-w-0"
+        }
+      >
+        <p
+          className="truncate pr-8"
+          title={note.title}
+        >
+          {note.title}
+        </p>
+      </div>
+
+      {/* Content */}
+      <div
+        className={
+          modes === "mobile"
+            ? "text-lg"
+            : "text-xl"
+        }
+      >
+        <p
+          className="
+            text-gray-600
+            overflow-hidden
+            break-words
+            [display:-webkit-box]
+            [-webkit-box-orient:vertical]
+            [-webkit-line-clamp:5]
+          "
+          title={
+            note.content ||
+            "Empty note"
           }
         >
-          <p className="truncate" title={note.title}>
-            {note.title}
-          </p>
-        </div>
-
-        <div className={modes === "mobile" ? "text-lg" : "text-xl"}>
-          <p
-            className="
-              text-gray-600
-              overflow-hidden
-              break-words
-              [display:-webkit-box]
-              [-webkit-box-orient:vertical]
-              [-webkit-line-clamp:5]
-            "
-            title={note.content || "Empty note"}
-          >
-            {note.content ? note.content : "Empty note"}
-          </p>
-        </div>
+          {note.content
+            ? note.content
+            : "Empty note"}
+        </p>
       </div>
-    );
-  }
-
-  if (modes === "mobile") {
-    return (
-      <div className="pt-12 w-full h-[83vh] overflow-hidden overflow-y-auto grid grid-cols-2 gap-2 custom-scroll ml-2 relative">
-        {notes.map((note) => (
-          <SmallPapers key={note.id} note={note} />
-        ))}
-
-        <div
-          onClick={onCreateNew}
-          className="mx-8 my-4 border-gray-500 border-2 rounded-2xl bg-[#e3e3e3] text-gray-500
-          p-4 flex justify-center items-center cursor-pointer
-          transform translate-y-0 hover:-translate-y-8 transition-transform duration-300"
-        >
-          <div className="font-bold text-8xl mb-2">
-            <p>+</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="pt-4 w-[50%] h-[92vh] overflow-hidden overflow-y-auto grid grid-cols-3 gap-2 custom-scroll ml-2 relative">
@@ -497,12 +642,14 @@ export default function NotePaper({
   if (toggleOptions === "folders") {
     return (
       <OpenFolder
-        modes={mode}
-        notes={notes}
-        currentNote={currentNote}
-        onCreateNew={handleCreateNew}
-        onSelectNote={handleSelectNote}
-      />
+  modes={mode}
+  notes={notes}
+  currentNote={currentNote}
+  onCreateNew={handleCreateNew}
+  onSelectNote={handleSelectNote}
+  fetchNotes={fetchNotes}
+  setCurrentNote={setCurrentNote}
+/>
     );
   }
 
