@@ -260,7 +260,8 @@ function OpenFolder({
   onCreateNew,
   onSelectNote,
   fetchNotes,
-  setCurrentNote
+  setCurrentNote,
+  folderId
 }) {
  function SmallPapers({ note }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -463,6 +464,102 @@ await fetchNotes();
     </div>
   );
 }
+if (modes === "mobile") {
+
+  return (
+
+    <div
+      className="
+        h-[78vh]
+        overflow-y-auto
+        custom-scroll
+
+        px-4
+        pt-4
+        pb-32
+      "
+    >
+
+      {/* Current Folder */}
+
+      <div className="flex justify-center mb-6">
+
+        <div
+          className="
+            px-8
+            py-2
+
+            bg-white
+
+            border-[3px]
+            border-[#ffbd59]
+
+            rounded-full
+
+            text-3xl
+            font-bold
+          "
+        >
+          Folder #{folderId}
+        </div>
+
+      </div>
+
+      {/* Notes Grid */}
+
+      <div
+        className="
+          grid
+          grid-cols-2
+          gap-4
+        "
+      >
+
+        {notes.map((note) => (
+
+          <SmallPapers
+            key={note.id}
+            note={note}
+          />
+
+        ))}
+
+        {/* Create Note */}
+
+        <div
+          onClick={onCreateNew}
+          className="
+            h-[24vh]
+
+            border-gray-500
+            border-2
+
+            rounded-2xl
+
+            bg-[#d9d9d9]
+
+            text-gray-500
+
+            flex
+            justify-center
+            items-center
+
+            cursor-pointer
+
+            transition-transform
+            hover:scale-105
+          "
+        >
+          <p className="text-7xl font-bold">
+            +
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
 
   return (
     <div className="pt-4 w-[50%] h-[92vh] overflow-hidden overflow-y-auto grid grid-cols-3 gap-2 custom-scroll ml-2 relative">
@@ -508,14 +605,6 @@ function OpenModes({ modes, folderId, currentNote, setCurrentNote, onNoteSaved }
             </div>
           </div>
         </div>
-
-        <PaperSheet
-          modes={modes}
-          folderId={folderId}
-          currentNote={currentNote}
-          setCurrentNote={setCurrentNote}
-          onNoteSaved={onNoteSaved}
-        />
       </div>
     );
   }
@@ -627,6 +716,8 @@ export default function NotePaper({
     setToggleOptions("");
   }
 
+  
+
   if (toggleOptions === "") {
     return (
       <PaperSheet
@@ -639,7 +730,39 @@ export default function NotePaper({
     );
   }
 
+  if (toggleOptions === "notes") {
+    return (
+      <OpenFolder
+        modes={mode}
+        notes={notes}
+        folderId={folderId}
+        currentNote={currentNote}
+        onCreateNew={handleCreateNew}
+        onSelectNote={handleSelectNote}
+        fetchNotes={fetchNotes}
+        setCurrentNote={setCurrentNote}
+      />
+    );
+  }
+
+    if (toggleOptions === "editor") {
+    return (
+      <PaperSheet
+        modes={mode}
+        folderId={folderId}
+        currentNote={currentNote}
+        setCurrentNote={setCurrentNote}
+        onNoteSaved={handleNoteSaved}
+      />
+    );
+  }
+
   if (toggleOptions === "folders") {
+
+      if (mode === "mobile") {
+      return null;
+    }
+
     return (
       <OpenFolder
   modes={mode}

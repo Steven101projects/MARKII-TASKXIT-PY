@@ -71,20 +71,27 @@ def update_folder(folder_id: int,
     db.refresh(folder)
     
     return folder
-
-@router.delete("{folder_id}")
+    
+@router.delete("/{folder_id}")
 
 def delete_folder(
     folder_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)):
+    current_user: User = Depends(get_current_user)
+):
 
     folder = db.query(Folder).filter(
         Folder.id == folder_id,
-        Folder.user_id == current_user
+        Folder.user_id == current_user.id
     ).first()
+
+    if not folder:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Folder not found"
+        )
 
     db.delete(folder)
     db.commit()
 
-    return {"message": "Folder deleted successfully"}  
+    return {"message": "Folder deleted successfully"}

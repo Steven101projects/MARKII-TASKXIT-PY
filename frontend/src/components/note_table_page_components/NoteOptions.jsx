@@ -53,37 +53,56 @@ export default function NoteOptions({
       setError("Could not create folder.");
     }
   }
+function FolderCapsule({ folder }) {
 
-  function FolderCapsule({ folder }) {
-    return (
-      <div
-        onClick={() => setFolderId(folder.id)}
-        title={folder.name}
+  function handleFolderClick() {
+
+    setFolderId(folder.id);
+
+    /*
+      Mobile:
+      open note papers after selecting folder
+    */
+
+    if (mode === "mobile") {
+      toggleLeft("notes");
+    }
+  }
+
+  return (
+    <div
+      onClick={handleFolderClick}
+      title={folder.name}
+      className="
+        group relative
+        flex items-center justify-center
+        px-2 py-4
+        border-[2px]
+        rounded-full
+        border-black
+        text-lg
+        bg-white
+        hover:scale-105
+        hover:border-gray-300
+        transition-transform
+        cursor-pointer
+        overflow-hidden
+        whitespace-nowrap
+      "
+    >
+      <span
         className="
-          group relative
-          flex items-center
-          p-4
-          border-[2px] rounded-full border-black text-lg bg-white
-          hover:scale-105 hover:border-gray-300
-          transition-transform cursor-pointer
-          overflow-hidden
+          folder-slide-text
+          block
+          w-max
           whitespace-nowrap
         "
       >
-        <span
-          className="
-            folder-slide-text
-            block
-            w-max
-            whitespace-nowrap
-          "
-        >
-          {folder.name}
-        </span>
-      </div>
-    );
-  }
-
+        {folder.name}
+      </span>
+    </div>
+  );
+}
   function CurrentFolderCapsule() {
     const folderName = currentFolder ? currentFolder.name : "Current Folder";
 
@@ -186,14 +205,83 @@ export default function NoteOptions({
   }
 
   function FoldersKeys() {
-    if (mode === "mobile") {
-      return (
-        <>
-          <FolderButtons />
-          <CreateFolderModal />
-        </>
-      );
-    }
+  if (mode === "mobile") {
+
+  return (
+
+    <>
+      <div
+        className="
+          px-4
+          pt-6
+          pb-32
+
+          grid
+          grid-cols-2
+          gap-4
+
+          h-[72vh]
+
+          overflow-y-auto
+          custom-scroll
+        "
+      >
+
+        {folders.map((folder) => (
+
+          <FolderCapsule
+            key={folder.id}
+            folder={folder}
+          />
+
+        ))}
+
+        <button
+          type="button"
+          onClick={() => setShowCreateFolderModal(true)}
+          className="
+            flex
+            justify-center
+            items-center
+
+            h-16
+
+            border-[2px]
+            border-black
+            rounded-full
+
+            bg-[#eeeced]
+
+            text-3xl
+            font-bold
+
+            hover:scale-105
+            transition-transform
+          "
+        >
+          +
+        </button>
+
+      </div>
+
+      {/* Bottom Buttons */}
+
+      <div
+        className="
+          fixed
+          bottom-6
+          left-1/2
+          -translate-x-1/2
+          z-50
+        "
+      >
+        <FolderButtons />
+      </div>
+
+      <CreateFolderModal />
+    </>
+  );
+}
 
     return (
       <>

@@ -24,6 +24,7 @@ function App() {
       <Route path='/journal' element={<JournalPage /> } />
       <Route path='/addnote' element={<NoteTable />} />
       <Route path='/editnote/:folderId' element={<EditNoteTable />} />
+            <Route path='/editnote/' element={<EditNoteTable />} />
       </Route>
     </Routes>
     </>
