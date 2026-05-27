@@ -101,7 +101,7 @@ export default function HeaderMenu() {
                     text-left text-slate-700 font-medium
                     hover:bg-slate-100 transition
                   "
-                  onClick={() => navigate("/profile")}
+                  onClick={() => navigate("/user")}
                 >
                   Profile
                 </button>

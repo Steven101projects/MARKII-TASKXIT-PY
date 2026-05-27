@@ -55,27 +55,189 @@ export default function UserProfilePage() {
     }
 
     if (isMobile) {
-      return (
-        <div className="bg-white w-[85%] h-[83%] rounded-3xl mt-10 p-6 flex flex-col items-center">
-          <div className="text-4xl font-bold mt-6">
-            <p>{user.name || user.email || "Unnamed User"}</p>
-          </div>
 
-          <div className="text-xl mt-4">
-            <p>ID: {user.id}</p>
-          </div>
+  return (
 
-          <div className="bg-gray-300 w-full mt-10 p-6">
-            <div className="bg-white text-xl text-center px-6 py-4 border-blue-950 border-2">
-              <p>
-                <span>Save type: </span>
-                Cloud
-              </p>
-            </div>
-          </div>
+    <div
+      className="
+        bg-white
+
+        w-[92%]
+        h-[85%]
+
+        rounded-3xl
+
+        mt-6
+
+        px-6
+        py-8
+
+        flex
+        flex-col
+
+        overflow-y-auto
+      "
+    >
+
+      {/* Profile Avatar */}
+
+      <div className="flex justify-center">
+
+        <div
+          className="
+            w-32
+            h-32
+
+            rounded-full
+
+            border-[4px]
+            border-blue-500
+
+            bg-gray-100
+
+            flex
+            items-center
+            justify-center
+
+            text-5xl
+            font-bold
+          "
+        >
+          {
+            user.username
+              ? user.username.charAt(0).toUpperCase()
+              : "?"
+          }
         </div>
-      );
-    }
+
+      </div>
+
+      {/* Username */}
+
+      <div className="text-center mt-6">
+
+        <p className="text-4xl font-bold break-words">
+          {user.username || "User"}
+        </p>
+
+        <p className="text-gray-500 text-lg mt-2 break-all">
+          {user.email}
+        </p>
+
+      </div>
+
+      {/* Divider */}
+
+      <div className="w-full mt-8">
+        <hr className="border-gray-300 border-2 rounded-full" />
+      </div>
+
+      {/* User Details */}
+
+      <div className="mt-8 flex flex-col gap-5">
+
+        <div
+          className="
+            bg-[#f5f5f5]
+
+            border-2
+            border-[#d6d6d6]
+
+            rounded-2xl
+
+            p-5
+          "
+        >
+          <p className="text-gray-500 text-sm mb-2">
+            USER ID
+          </p>
+
+          <p className="text-xl font-bold break-all">
+            {user.id}
+          </p>
+        </div>
+
+        <div
+          className="
+            bg-[#f5f5f5]
+
+            border-2
+            border-[#d6d6d6]
+
+            rounded-2xl
+
+            p-5
+          "
+        >
+          <p className="text-gray-500 text-sm mb-2">
+            ACCOUNT TYPE
+          </p>
+
+          <p className="text-xl font-bold capitalize">
+            {user.account_mode}
+          </p>
+        </div>
+
+      </div>
+
+      {/* Action Buttons */}
+
+      <div className="mt-auto pt-10 flex flex-col gap-4">
+
+        <button
+          className="
+            w-full
+
+            bg-primary
+
+            text-white
+
+            text-xl
+            font-bold
+
+            py-4
+
+            rounded-2xl
+
+            transition-all
+
+            hover:scale-[1.02]
+          "
+        >
+          Edit Profile
+        </button>
+
+        <button
+          className="
+            w-full
+
+            bg-white
+
+            text-red-500
+
+            text-xl
+            font-bold
+
+            py-4
+
+            rounded-2xl
+
+            border-2
+            border-red-600
+
+            transition-all
+
+            hover:bg-white
+          "
+        >
+          Delete Account
+        </button>
+
+      </div>
+
+    </div>
+  );
+}
 
     return (
       <div className="bg-white w-[85%] h-[83%] rounded-3xl mt-10 flex">
