@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API from "../api/API";
+import API from "../api/API.js";
 
 export default function BoardNote({ isEditing }) {
   const [boardText, setBoardText] = useState("Resume!");
