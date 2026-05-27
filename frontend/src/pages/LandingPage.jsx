@@ -2,7 +2,7 @@ import { useState } from "react";
 import usePageMeta from "../hooks/usePageMeta";
 import { useNavigate } from "react-router-dom";
 
-import API from "../api/API.js";
+import API from "../api/index.js";
 
 import ToastBox from "../components/ToastBox";
 

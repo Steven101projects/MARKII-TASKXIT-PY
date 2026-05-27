@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import useIsMobile from "../hooks/useIsMobile";
 
-import API from "../api/API.js";
+import API from "../api/index.js";
 
 export default function UserProfilePage() {
 

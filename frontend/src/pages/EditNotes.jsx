@@ -8,7 +8,7 @@ import NoteOptions from "../components/note_table_page_components/NoteOptions";
 
 import useIsMobile from "../hooks/useIsMobile";
 
-import API from "../api/API.js";
+import API from "../api/index.js";
 
 export default function EditNoteTable() {
 
