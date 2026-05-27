@@ -1,18 +1,36 @@
-from sqlalchemy import Column, ForeignKey, Integer, String,Text, DateTime
-from app.core.database import Base
-from datetime import datetime, timezone
+from sqlalchemy import Column, ForeignKey, String, Text, DateTime
 from sqlalchemy.orm import relationship
+from datetime import datetime, timezone
+import uuid
+
+from app.core.database import Base
 
 
 class Note(Base):
     __tablename__ = "notes"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(
+        String,
+        primary_key=True,
+        index=True,
+        default=lambda: str(uuid.uuid4())
+    )
 
-    title = Column(String(255), nullable=False)
-    content = Column(Text, nullable=False)
+    title = Column(
+        String(255),
+        nullable=False
+    )
 
-    folder_id = Column(Integer, ForeignKey("folders.id"), nullable=False)
+    content = Column(
+        Text,
+        nullable=False
+    )
+
+    folder_id = Column(
+        String,
+        ForeignKey("folders.id"),
+        nullable=False
+    )
 
     created_at = Column(
         DateTime(timezone=True),
@@ -27,4 +45,7 @@ class Note(Base):
         nullable=False
     )
 
-    folder = relationship("Folder", back_populates="notes")
+    folder = relationship(
+        "Folder",
+        back_populates="notes"
+    )
