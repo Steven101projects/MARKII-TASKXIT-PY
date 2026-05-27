@@ -1,19 +1,17 @@
-import axios from "axios"
+import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://127.0.0.1:8000",
+    baseURL: import.meta.env.VITE_API_URL,
 });
 
 API.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");
 
-    if(token) {
+    if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
-})
+});
 
-export default API
-
-//This works well with your Vite proxy setup.
+export default API;

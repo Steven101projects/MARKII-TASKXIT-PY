@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API from "../api/API";
 
 export default function NoteOptions({
   mode,
@@ -9,11 +10,17 @@ export default function NoteOptions({
   folders = [],
   setFolders,
 }) {
-  const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
-  const [newFolderName, setNewFolderName] = useState("");
+  const [showCreateFolderModal, setShowCreateFolderModal] =
+    useState(false);
+
+  const [newFolderName, setNewFolderName] =
+    useState("");
+
   const [error, setError] = useState("");
 
-  const currentFolder = folders.find((folder) => folder.id === Number(folderId));
+  const currentFolder = folders.find(
+    (folder) => folder.id === folderId
+  );
 
   async function handleCreateFolder() {
     try {
@@ -24,26 +31,20 @@ export default function NoteOptions({
         return;
       }
 
-      const token = localStorage.getItem("token");
-
-      const response = await fetch("http://127.0.0.1:8000/api/folders/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
+      const response = await API.post(
+        "/api/folders/",
+        {
           name: newFolderName.trim(),
-        }),
-      });
+        }
+      );
 
-      if (!response.ok) {
-        throw new Error("Failed to create folder");
-      }
+      const createdFolder = response.data;
 
-      const createdFolder = await response.json();
+      setFolders((prevFolders) => [
+        ...prevFolders,
+        createdFolder,
+      ]);
 
-      setFolders((prevFolders) => [...prevFolders, createdFolder]);
       setFolderId(createdFolder.id);
 
       setNewFolderName("");
@@ -53,58 +54,55 @@ export default function NoteOptions({
       setError("Could not create folder.");
     }
   }
-function FolderCapsule({ folder }) {
 
-  function handleFolderClick() {
+  function FolderCapsule({ folder }) {
+    function handleFolderClick() {
+      setFolderId(folder.id);
 
-    setFolderId(folder.id);
-
-    /*
-      Mobile:
-      open note papers after selecting folder
-    */
-
-    if (mode === "mobile") {
-      toggleLeft("notes");
+      if (mode === "mobile") {
+        toggleLeft("notes");
+      }
     }
-  }
 
-  return (
-    <div
-      onClick={handleFolderClick}
-      title={folder.name}
-      className="
-        group relative
-        flex items-center justify-center
-        px-2 py-4
-        border-[2px]
-        rounded-full
-        border-black
-        text-lg
-        bg-white
-        hover:scale-105
-        hover:border-gray-300
-        transition-transform
-        cursor-pointer
-        overflow-hidden
-        whitespace-nowrap
-      "
-    >
-      <span
+    return (
+      <div
+        onClick={handleFolderClick}
+        title={folder.name}
         className="
-          folder-slide-text
-          block
-          w-max
+          group relative
+          flex items-center justify-center
+          px-2 py-4
+          border-[2px]
+          rounded-full
+          border-black
+          text-lg
+          bg-white
+          hover:scale-105
+          hover:border-gray-300
+          transition-transform
+          cursor-pointer
+          overflow-hidden
           whitespace-nowrap
         "
       >
-        {folder.name}
-      </span>
-    </div>
-  );
-}
+        <span
+          className="
+            folder-slide-text
+            block
+            w-max
+            whitespace-nowrap
+          "
+        >
+          {folder.name}
+        </span>
+      </div>
+    );
+  }
+
   function CurrentFolderCapsule() {
-    const folderName = currentFolder ? currentFolder.name : "Current Folder";
+    const folderName = currentFolder
+      ? currentFolder.name
+      : "Current Folder";
 
     return (
       <div
@@ -113,7 +111,12 @@ function FolderCapsule({ folder }) {
           group relative
           flex items-center
           p-2 w-44
-          border-[2px] rounded-full px-3 text-lg bg-white border-[#ffbd59]
+          border-[2px]
+          rounded-full
+          px-3
+          text-lg
+          bg-white
+          border-[#ffbd59]
           overflow-hidden
           whitespace-nowrap
         "
@@ -134,21 +137,41 @@ function FolderCapsule({ folder }) {
 
   function FolderButtons() {
     return (
-      <div className="flex justify-center gap-4 ">
+      <div className="flex justify-center gap-4">
         <div
           onClick={() => toggleLeft("modes")}
-          className="flex justify-center p-2 items-center px-12
-          border-[2px] rounded-lg border-black text-lg bg-white
-          hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer"
+          className="
+            flex justify-center
+            p-2 items-center px-12
+            border-[2px]
+            rounded-lg
+            border-black
+            text-lg
+            bg-white
+            hover:scale-105
+            hover:border-gray-300
+            transition-transform
+            cursor-pointer
+          "
         >
           Modes
         </div>
 
         <div
           onClick={() => toggleLeft("folders")}
-          className="flex justify-center p-2 items-center px-12
-          border-[2px] rounded-lg border-black text-lg bg-white
-          hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer"
+          className="
+            flex justify-center
+            p-2 items-center px-12
+            border-[2px]
+            rounded-lg
+            border-black
+            text-lg
+            bg-white
+            hover:scale-105
+            hover:border-gray-300
+            transition-transform
+            cursor-pointer
+          "
         >
           Folders
         </div>
@@ -160,22 +183,54 @@ function FolderCapsule({ folder }) {
     if (!showCreateFolderModal) return null;
 
     return (
-      <div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm flex justify-center items-center px-4">
-        <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-xl">
-          <h2 className="text-2xl font-bold mb-2">Create Folder</h2>
+      <div
+        className="
+          fixed inset-0 z-50
+          bg-black/20
+          backdrop-blur-sm
+          flex justify-center items-center
+          px-4
+        "
+      >
+        <div
+          className="
+            bg-white
+            w-full
+            max-w-md
+            rounded-2xl
+            p-6
+            shadow-xl
+          "
+        >
+          <h2 className="text-2xl font-bold mb-2">
+            Create Folder
+          </h2>
 
           <p className="text-sm text-gray-500 mb-4">
             Add a new folder for your notes.
           </p>
 
-          {error && <p className="text-sm text-red-600 mb-3">{error}</p>}
+          {error && (
+            <p className="text-sm text-red-600 mb-3">
+              {error}
+            </p>
+          )}
 
           <input
             type="text"
             value={newFolderName}
-            onChange={(e) => setNewFolderName(e.target.value)}
+            onChange={(e) =>
+              setNewFolderName(e.target.value)
+            }
             placeholder="Folder name"
-            className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none mb-5"
+            className="
+              w-full
+              border border-gray-300
+              rounded-xl
+              px-4 py-3
+              outline-none
+              mb-5
+            "
           />
 
           <div className="flex justify-end gap-3">
@@ -186,7 +241,12 @@ function FolderCapsule({ folder }) {
                 setNewFolderName("");
                 setError("");
               }}
-              className="px-5 py-2 rounded-xl border border-gray-300 hover:bg-gray-100"
+              className="
+                px-5 py-2
+                rounded-xl
+                border border-gray-300
+                hover:bg-gray-100
+              "
             >
               Cancel
             </button>
@@ -194,7 +254,13 @@ function FolderCapsule({ folder }) {
             <button
               type="button"
               onClick={handleCreateFolder}
-              className="px-5 py-2 rounded-xl bg-gray-900 text-white hover:bg-gray-700"
+              className="
+                px-5 py-2
+                rounded-xl
+                bg-gray-900
+                text-white
+                hover:bg-gray-700
+              "
             >
               Create
             </button>
@@ -205,87 +271,15 @@ function FolderCapsule({ folder }) {
   }
 
   function FoldersKeys() {
-  if (mode === "mobile") {
-
-  return (
-
-    <>
-      <div
-        className="
-          px-4
-          pt-6
-          pb-32
-
-          grid
-          grid-cols-2
-          gap-4
-
-          h-[72vh]
-
-          overflow-y-auto
-          custom-scroll
-        "
-      >
-
-        {folders.map((folder) => (
-
-          <FolderCapsule
-            key={folder.id}
-            folder={folder}
-          />
-
-        ))}
-
-        <button
-          type="button"
-          onClick={() => setShowCreateFolderModal(true)}
-          className="
-            flex
-            justify-center
-            items-center
-
-            h-16
-
-            border-[2px]
-            border-black
-            rounded-full
-
-            bg-[#eeeced]
-
-            text-3xl
-            font-bold
-
-            hover:scale-105
-            transition-transform
-          "
-        >
-          +
-        </button>
-
-      </div>
-
-      {/* Bottom Buttons */}
-
-      <div
-        className="
-          fixed
-          bottom-6
-          left-1/2
-          -translate-x-1/2
-          z-50
-        "
-      >
-        <FolderButtons />
-      </div>
-
-      <CreateFolderModal />
-    </>
-  );
-}
-
     return (
       <>
-        <div className="pt-8 w-[50%] h-screen">
+        <div
+          className="
+            pt-8
+            w-[50%]
+            h-screen
+          "
+        >
           <div
             id="folderGrid"
             className="
@@ -298,35 +292,82 @@ function FolderCapsule({ folder }) {
             "
           >
             {folders.map((folder) => (
-              <FolderCapsule key={folder.id} folder={folder} />
+              <FolderCapsule
+                key={folder.id}
+                folder={folder}
+              />
             ))}
 
             <button
               type="button"
-              onClick={() => setShowCreateFolderModal(true)}
-              className="flex justify-center p-4 border-[2px] rounded-full border-black text-xl font-bold
-              hover:scale-105 transition-transform bg-[#eeeced] cursor-pointer
-              hover:border-gray-300"
+              onClick={() =>
+                setShowCreateFolderModal(true)
+              }
+              className="
+                flex justify-center
+                p-4
+                border-[2px]
+                rounded-full
+                border-black
+                text-xl
+                font-bold
+                hover:scale-105
+                transition-transform
+                bg-[#eeeced]
+                cursor-pointer
+                hover:border-gray-300
+              "
             >
               +
             </button>
           </div>
 
-          <div className="flex flex-col items-center pt-24 gap-2 h-[60%]">
+          <div
+            className="
+              flex flex-col items-center
+              pt-24 gap-2 h-[60%]
+            "
+          >
             <div
-              onClick={() => toggleLeft("modes")}
-              className="flex justify-center p-2 items-center
-              border-[2px] rounded-lg border-black text-lg bg-white w-[70%]
-              hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer"
+              onClick={() =>
+                toggleLeft("modes")
+              }
+              className="
+                flex justify-center
+                p-2 items-center
+                border-[2px]
+                rounded-lg
+                border-black
+                text-lg
+                bg-white
+                w-[70%]
+                hover:scale-105
+                hover:border-gray-300
+                transition-transform
+                cursor-pointer
+              "
             >
               Modes
             </div>
 
             <div
-              onClick={() => toggleLeft("folders")}
-              className="flex justify-center p-2 items-center
-              border-[2px] rounded-lg border-black text-lg bg-white w-[70%]
-              hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer"
+              onClick={() =>
+                toggleLeft("folders")
+              }
+              className="
+                flex justify-center
+                p-2 items-center
+                border-[2px]
+                rounded-lg
+                border-black
+                text-lg
+                bg-white
+                w-[70%]
+                hover:scale-105
+                hover:border-gray-300
+                transition-transform
+                cursor-pointer
+              "
             >
               Folders
             </div>
@@ -339,78 +380,56 @@ function FolderCapsule({ folder }) {
   }
 
   function TwoKeys() {
-    if (mode === "mobile") {
-      return <FolderButtons />;
-    }
-
     return (
       <div className="pt-8 w-[50%] h-screen">
         <CurrentFolderCapsule />
 
-        <div className="flex flex-col items-center justify-center gap-2 h-[60%]">
+        <div
+          className="
+            flex flex-col items-center
+            justify-center gap-2 h-[60%]
+          "
+        >
           <div
-            onClick={() => toggleLeft("modes")}
-            className="flex justify-center p-2 items-center
-            border-[2px] rounded-lg border-black text-lg bg-white w-[70%]
-            hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer"
+            onClick={() =>
+              toggleLeft("modes")
+            }
+            className="
+              flex justify-center
+              p-2 items-center
+              border-[2px]
+              rounded-lg
+              border-black
+              text-lg
+              bg-white
+              w-[70%]
+              hover:scale-105
+              hover:border-gray-300
+              transition-transform
+              cursor-pointer
+            "
           >
             Modes
           </div>
 
           <div
-            onClick={() => toggleLeft("folders")}
-            className="flex justify-center p-2 items-center
-            border-[2px] rounded-lg border-black text-lg bg-white w-[70%]
-            hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer"
-          >
-            Folders
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function ModesKeys() {
-    if (mode === "mobile") {
-      return <FolderButtons />;
-    }
-
-    return (
-      <div className="pt-8 w-[50%] h-screen">
-        <CurrentFolderCapsule />
-
-        <div className="flex flex-col items-center justify-center gap-2 h-[40%]">
-          <div id="otherPapers" className="flex gap-12 text-white font-bold m-4 mb-16">
-            <div className="text-center hover:scale-110 transition-transform cursor-pointer">
-              <img src="/note-svgrepo-com.svg" alt="Notes" className="w-32 invert" />
-              <p className="text-2xl mt-4">Notes</p>
-            </div>
-
-            <div className="text-center hover:scale-110 transition-transform cursor-pointer">
-              <img src="/list-check-svgrepo-com.svg" alt="Checklist" className="w-32 invert" />
-              <p className="text-2xl mt-4">Checklist</p>
-            </div>
-
-            <div className="text-center hover:scale-110 transition-transform cursor-pointer">
-              <img src="/notes-note-svgrepo-com.svg" alt="Numbered List" className="w-32 invert" />
-              <p className="text-xl mt-5">Numbered List</p>
-            </div>
-          </div>
-
-          <div
-            onClick={() => toggleLeft("modes")}
-            className="flex justify-center p-2 items-center
-            border-[2px] rounded-lg border-black text-lg bg-white w-[70%]
-            hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer"
-          >
-            Modes
-          </div>
-
-          <div
-            onClick={() => toggleLeft("folders")}
-            className="flex justify-center p-2 items-center
-            border-[2px] rounded-lg border-black text-lg bg-white w-[70%]
-            hover:scale-105 hover:border-gray-300 transition-transform cursor-pointer"
+            onClick={() =>
+              toggleLeft("folders")
+            }
+            className="
+              flex justify-center
+              p-2 items-center
+              border-[2px]
+              rounded-lg
+              border-black
+              text-lg
+              bg-white
+              w-[70%]
+              hover:scale-105
+              hover:border-gray-300
+              transition-transform
+              cursor-pointer
+            "
           >
             Folders
           </div>
@@ -421,10 +440,6 @@ function FolderCapsule({ folder }) {
 
   if (option === "folders") {
     return <FoldersKeys />;
-  }
-
-  if (option === "modes") {
-    return <ModesKeys />;
   }
 
   return <TwoKeys />;

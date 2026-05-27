@@ -8,6 +8,8 @@ import NoteOptions from "../components/note_table_page_components/NoteOptions";
 
 import useIsMobile from "../hooks/useIsMobile";
 
+import API from "../api/API";
+
 export default function EditNoteTable() {
 
     const { folderId } = useParams();
@@ -32,7 +34,7 @@ export default function EditNoteTable() {
     */
 
     const [selectedFolderId, setSelectedFolderId] =
-        useState(folderId ? Number(folderId) : null);
+        useState(folderId || null);
 
     /*
       Current opened note
@@ -72,7 +74,7 @@ export default function EditNoteTable() {
 
         if (folderId) {
 
-            setSelectedFolderId(Number(folderId));
+            setSelectedFolderId(folderId);
 
             /*
               Mobile:
@@ -107,55 +109,26 @@ export default function EditNoteTable() {
 
         try {
 
-            const token = localStorage.getItem("token");
-
-            /*
-              No auth
-            */
-
-            if (!token) {
-
-                localStorage.removeItem("token");
-
-                navigate("/");
-
-                return;
-            }
-
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/folders/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+            const response = await API.get(
+                "/api/folders/"
             );
 
-            /*
-              Expired auth
-            */
-
-            if (response.status === 401) {
-
-                localStorage.removeItem("token");
-
-                navigate("/");
-
-                return;
-            }
-
-            if (!response.ok) {
-                throw new Error("Failed to load folders");
-            }
-
-            const data = await response.json();
-
-            setFolders(data);
+            setFolders(response.data);
 
         } catch (err) {
 
             console.error(err);
 
+            /*
+              Unauthorized
+            */
+
+            if (err.response?.status === 401) {
+
+                localStorage.removeItem("token");
+
+                navigate("/");
+            }
         }
     }
 

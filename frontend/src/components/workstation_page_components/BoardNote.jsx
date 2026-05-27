@@ -1,67 +1,38 @@
 import { useEffect, useState } from "react";
+import API from "../api/API";
 
 export default function BoardNote({ isEditing }) {
   const [boardText, setBoardText] = useState("Resume!");
-  const [token] = useState(localStorage.getItem("token"));
 
   // LOAD BOARD NOTE FROM BACKEND
   useEffect(() => {
     async function fetchBoardNote() {
       try {
-        const response = await fetch(
-          "http://127.0.0.1:8000/api/boardnote",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await API.get("/api/boardnote");
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch board note");
-        }
-
-        const data = await response.json();
-
-        setBoardText(data.content);
+        setBoardText(response.data.content);
       } catch (error) {
         console.error("Board note fetch error:", error);
       }
     }
 
-    if (token) {
-      fetchBoardNote();
-    }
-  }, [token]);
+    fetchBoardNote();
+  }, []);
 
   // AUTO SAVE WITH DEBOUNCE
   useEffect(() => {
-    if (!token) return;
-
     const timeout = setTimeout(async () => {
       try {
-        await fetch(
-          "http://127.0.0.1:8000/api/boardnote",
-          {
-            method: "PUT",
-
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-
-            body: JSON.stringify({
-              content: boardText,
-            }),
-          }
-        );
+        await API.put("/api/boardnote", {
+          content: boardText,
+        });
       } catch (error) {
         console.error("Board note save error:", error);
       }
     }, 800);
 
     return () => clearTimeout(timeout);
-  }, [boardText, token]);
+  }, [boardText]);
 
   return (
     <div

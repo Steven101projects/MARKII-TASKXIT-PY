@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../api/API";
 
 function FolderCapsule({
   folder,
@@ -155,24 +155,17 @@ export default function FolderShelf() {
 
   const token = localStorage.getItem("token");
 
-  async function fetchFolders() {
-    try {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/api/folders/",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+async function fetchFolders() {
+  try {
+    const response = await API.get("/api/folders/");
 
-      setFolders(response.data);
-    } catch (error) {
-      console.error("Failed to fetch folders:", error);
-    } finally {
-      setLoading(false);
-    }
+    setFolders(response.data);
+  } catch (error) {
+    console.error("Failed to fetch folders:", error);
+  } finally {
+    setLoading(false);
   }
+}
 
   useEffect(() => {
     fetchFolders();
@@ -191,8 +184,8 @@ export default function FolderShelf() {
     if (!newName || newName.trim() === "") return;
 
     try {
-      await axios.put(
-        `http://127.0.0.1:8000/api/folders/${folder.id}`,
+await API.put(
+  `/api/folders/${folder.id}`,
         {
           name: newName,
         },
@@ -217,8 +210,8 @@ export default function FolderShelf() {
     if (!confirmed) return;
 
     try {
-      await axios.delete(
-        `http://127.0.0.1:8000/api/folders/${folder.id}`,
+     await API.delete(
+  `/api/folders/${folder.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
