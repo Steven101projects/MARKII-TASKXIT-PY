@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../api/index.js";
+import API from "../../api/index.js";
 
 export default function NoteOptions({
   mode,

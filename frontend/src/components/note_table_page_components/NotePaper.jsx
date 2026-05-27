@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import API from "../api/API.js";
+import API from "../../api/index.js";
 
 function NoteCard({
   folderId,
